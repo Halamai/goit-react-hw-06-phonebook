@@ -4,15 +4,18 @@ import s from "./ContactList.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { removeContact } from "../../redux/contacts/actions";
 
+const getWisibileContacts = ({ contacts: { items, filter } }) => {
+  if (filter) {
+    return items.filter((contact) =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  } else return items;
+};
+
 const ContactList = () => {
-  const contactsList = useSelector(({ contacts: { items, filter } }) => {
-    if (filter) {
-      return items.filter((contact) =>
-        contact.name.toLowerCase().includes(filter.toLowerCase())
-      );
-    } else return items;
-  });
+  const contactsList = useSelector(getWisibileContacts);
   const dispatch = useDispatch();
+
   return (
     <ul className={s.menu}>
       {contactsList &&
